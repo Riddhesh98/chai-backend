@@ -16,4 +16,15 @@ app.use(urlencoded({extended:true, limit:"16kb"}));
 app.use(express.static('public'));
 app.use(cookieParser());
 
+//import routes
+    //as route is default export  
+    //so we can give own name like below userRoutes
+    import userRouter from "./routes/user.routess.js"
+
+
+
+
+//routes declaration
+app.use("/api/v1/users", userRouter)
+
 export {app};
