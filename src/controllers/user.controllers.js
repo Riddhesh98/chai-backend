@@ -161,9 +161,9 @@ const loginUser = asyncHandler( async (req,res) => {
         User.findByIdAndUpdate(
             req.user._id,
             {
-                $set  :{
-                    refreshToken : undefined,
-                }
+               $unset:{
+                refreshToken : 1 
+               }
 
             },
             {
@@ -182,9 +182,9 @@ const loginUser = asyncHandler( async (req,res) => {
         .status(200)
         .clearCookie("refreshToken", options)
         .clearCookie("accessToken", options)
-        .json({
-            new : ApiResponse(200, {}, "User logged out successfully")
-        })    
+        .json(
+          new ApiResponse(200,{},"User logged out successfully")   
+        )    
     })
 
 
@@ -444,7 +444,7 @@ const loginUser = asyncHandler( async (req,res) => {
                 const user = await User.aggregate([
                     {
                         $match:{
-                            _id: mongoose.Types.ObjectId(req.user._id)
+                            _id:  new mongoose.Types.ObjectId(req.user._id)
                         }
                     },
                     {
@@ -496,5 +496,5 @@ const loginUser = asyncHandler( async (req,res) => {
 export {registerUser , loginUser , logoutUser , refreshAccessToken
     ,changeCurrentPassword, getCurrentUser , updateAccountDetails
     , updateUserAvatar , updateUserCoverImage , getCurrentUserChannelProfile
-    ,
+    ,getWatchHistory
 }; 
